@@ -11,10 +11,10 @@ class DataBase extends databaseManager_1.DataBaseManager {
     emitter;
     database = "forge.db";
     entityManager = {
-        sqlite: [types_1.SQLiteRecord, types_1.Cooldown],
-        mongo: [types_1.MongoRecord, types_1.MongoCooldown],
-        mysql: [types_1.Record, types_1.Cooldown],
-        postgres: [types_1.Record, types_1.Cooldown],
+        sqlite: [types_1.SQLiteRecord, types_1.Cooldown, types_1.Timeout],
+        mongo: [types_1.MongoRecord, types_1.MongoCooldown, types_1.MongoTimeout],
+        mysql: [types_1.Record, types_1.Cooldown, types_1.Timeout],
+        postgres: [types_1.Record, types_1.Cooldown, types_1.Timeout],
     };
     static entities;
     db;

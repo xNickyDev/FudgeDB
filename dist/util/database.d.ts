@@ -1,4 +1,4 @@
-import { Cooldown, IDataBaseOptions, MongoCooldown, MongoRecord, Record, RecordData, SQLiteRecord, Timeout } from './types';
+import { Cooldown, IDataBaseOptions, MongoCooldown, MongoRecord, MongoTimeout, Record, RecordData, SQLiteRecord, Timeout } from './types';
 import { TypedEmitter } from 'tiny-typed-emitter';
 import { IDBEvents } from '../structures';
 import { TransformEvents } from '..';
@@ -9,10 +9,10 @@ export declare class DataBase extends DataBaseManager {
     private emitter;
     database: string;
     entityManager: {
-        sqlite: (typeof SQLiteRecord | typeof Cooldown)[];
-        mongo: (typeof MongoRecord | typeof MongoCooldown)[];
-        mysql: (typeof Record | typeof Cooldown)[];
-        postgres: (typeof Record | typeof Cooldown)[];
+        sqlite: (typeof SQLiteRecord | typeof Cooldown | typeof Timeout)[];
+        mongo: (typeof MongoRecord | typeof MongoCooldown | typeof MongoTimeout)[];
+        mysql: (typeof Record | typeof Cooldown | typeof Timeout)[];
+        postgres: (typeof Record | typeof Cooldown | typeof Timeout)[];
     };
     private static entities;
     private db;

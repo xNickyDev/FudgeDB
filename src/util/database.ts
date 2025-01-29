@@ -14,10 +14,10 @@ function isGuildData(data: RecordData): data is GuildData {
 export class DataBase extends DataBaseManager {
     public database = "forge.db";
     public entityManager = {
-        sqlite: [SQLiteRecord, Cooldown],
-        mongo: [MongoRecord, MongoCooldown],
-        mysql: [Record, Cooldown],
-        postgres: [Record, Cooldown],
+        sqlite: [SQLiteRecord, Cooldown, Timeout],
+        mongo: [MongoRecord, MongoCooldown, MongoTimeout],
+        mysql: [Record, Cooldown, Timeout],
+        postgres: [Record, Cooldown, Timeout],
     };
     private static entities: {
         Record: typeof Record | typeof MongoRecord;
