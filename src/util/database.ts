@@ -155,6 +155,7 @@ export class DataBase extends DataBaseManager {
     }
 
     public static async restoreTimeouts() {
+        console.log("called")
         const timeouts = await this.db.getRepository(this.entities.Timeout).find()
     
         for (const timeout of timeouts) {
@@ -163,10 +164,14 @@ export class DataBase extends DataBaseManager {
 
             if (timeLeft > 0) {
                 setTimeout(async () => {
+                    console.log(code)
+                    console.log(code.resolve)
                     code.resolve
                     await this.timeoutDelete(timeout.identifier)
                 }, timeLeft)
             } else {
+                console.log(code)
+                console.log(code.resolve)
                 code.resolve
                 await this.timeoutDelete(timeout.identifier)
             }
