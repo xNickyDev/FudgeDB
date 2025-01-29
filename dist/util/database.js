@@ -131,23 +131,18 @@ class DataBase extends databaseManager_1.DataBaseManager {
         return data ? { ...data, left: Math.max(data.time - (Date.now() - data.startedAt), 0) } : { left: 0 };
     }
     static async restoreTimeouts() {
-        console.log("called");
         const timeouts = await this.db.getRepository(this.entities.Timeout).find();
         for (const timeout of timeouts) {
             const code = JSON.parse(timeout.code);
             const timeLeft = (await this.timeoutTimeLeft(timeout.identifier)).left;
             if (timeLeft > 0) {
                 setTimeout(async () => {
-                    console.log(code);
-                    console.log(code.resolve);
-                    code.resolve;
+                    await code.functions[0]["resolveCode"];
                     await this.timeoutDelete(timeout.identifier);
                 }, timeLeft);
             }
             else {
-                console.log(code);
-                console.log(code.resolve);
-                code.resolve;
+                await code.functions[0]["resolveCode"];
                 await this.timeoutDelete(timeout.identifier);
             }
         }

@@ -5,7 +5,7 @@ import { IDBEvents } from '../structures';
 import { TransformEvents } from '..';
 import 'reflect-metadata';
 import { DataBaseManager } from './databaseManager';
-import { IExtendedCompiledFunctionField } from '@tryforge/forgescript';
+import { CompiledFunction, Context, IExtendedCompiledFunctionField } from '@tryforge/forgescript';
 
 function isGuildData(data: RecordData): data is GuildData {
     return ['member', 'channel', 'role'].includes(data.type!);
@@ -155,7 +155,6 @@ export class DataBase extends DataBaseManager {
     }
 
     public static async restoreTimeouts() {
-        console.log("called")
         const timeouts = await this.db.getRepository(this.entities.Timeout).find()
     
         for (const timeout of timeouts) {
@@ -164,15 +163,11 @@ export class DataBase extends DataBaseManager {
 
             if (timeLeft > 0) {
                 setTimeout(async () => {
-                    console.log(code)
-                    console.log(code.resolve)
-                    code.resolve
+                    await code.functions[0]["resolveCode"]
                     await this.timeoutDelete(timeout.identifier)
                 }, timeLeft)
             } else {
-                console.log(code)
-                console.log(code.resolve)
-                code.resolve
+                await code.functions[0]["resolveCode"]
                 await this.timeoutDelete(timeout.identifier)
             }
         }
