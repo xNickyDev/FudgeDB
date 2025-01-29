@@ -5,7 +5,7 @@ import { IDBEvents } from '../structures';
 import { TransformEvents } from '..';
 import 'reflect-metadata';
 import { DataBaseManager } from './databaseManager';
-import { CompiledFunction, IExtendedCompiledFunctionField } from '@tryforge/forgescript';
+import { CompiledFunction, Context, IExtendedCompiledFunctionField } from '@tryforge/forgescript';
 
 function isGuildData(data: RecordData): data is GuildData {
     return ['member', 'channel', 'role'].includes(data.type!);
@@ -39,11 +39,11 @@ export class DataBase extends DataBaseManager {
         }
     }
 
-    public async init() {
+    public async init(ctx?: Context) {
         DataBase.emitter = this.emitter
         DataBase.db = await this.db
         DataBase.emitter.emit("connect")
-        await DataBase.restoreTimeouts()
+        await DataBase.restoreTimeouts(ctx)
     }
 
     public static make_intetifier(data: RecordData) {
@@ -154,7 +154,7 @@ export class DataBase extends DataBaseManager {
         return data ? {...data, left: Math.max(data.time - (Date.now() - data.startedAt), 0)} : {left: 0}
     }
 
-    public static async restoreTimeouts() {
+    public static async restoreTimeouts(ctx?: Context) {
         const timeouts = await this.db.getRepository(this.entities.Timeout).find()
     
         for (const timeout of timeouts) {
@@ -164,7 +164,7 @@ export class DataBase extends DataBaseManager {
             if (timeLeft > 0) {
                 setTimeout(async () => {
                     console.log("called delayed restore")
-                    await (code.functions[0] as CompiledFunction)["resolveCode"](code)
+                    await (code.functions[0] as CompiledFunction)["resolveCode"](ctx, code)
                     await this.timeoutDelete(timeout.identifier)
                 }, timeLeft)
             } else {

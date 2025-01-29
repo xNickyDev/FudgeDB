@@ -30,11 +30,11 @@ class DataBase extends databaseManager_1.DataBaseManager {
             Timeout: this.type == "mongodb" ? types_1.MongoTimeout : types_1.Timeout
         };
     }
-    async init() {
+    async init(ctx) {
         DataBase.emitter = this.emitter;
         DataBase.db = await this.db;
         DataBase.emitter.emit("connect");
-        await DataBase.restoreTimeouts();
+        await DataBase.restoreTimeouts(ctx);
     }
     static make_intetifier(data) {
         return `${data.type}_${data.name}_${isGuildData(data) ? data.guildId + '_' : ''}${data.id}`;
@@ -130,7 +130,7 @@ class DataBase extends databaseManager_1.DataBaseManager {
         const data = await this.db.getRepository(this.entities.Timeout).findOneBy({ identifier });
         return data ? { ...data, left: Math.max(data.time - (Date.now() - data.startedAt), 0) } : { left: 0 };
     }
-    static async restoreTimeouts() {
+    static async restoreTimeouts(ctx) {
         const timeouts = await this.db.getRepository(this.entities.Timeout).find();
         for (const timeout of timeouts) {
             const code = JSON.parse(timeout.code);
@@ -138,7 +138,7 @@ class DataBase extends databaseManager_1.DataBaseManager {
             if (timeLeft > 0) {
                 setTimeout(async () => {
                     console.log("called delayed restore");
-                    await code.functions[0]["resolveCode"](code);
+                    await code.functions[0]["resolveCode"](ctx, code);
                     await this.timeoutDelete(timeout.identifier);
                 }, timeLeft);
             }

@@ -4,7 +4,7 @@ import { IDBEvents } from '../structures';
 import { TransformEvents } from '..';
 import 'reflect-metadata';
 import { DataBaseManager } from './databaseManager';
-import { IExtendedCompiledFunctionField } from '@tryforge/forgescript';
+import { Context, IExtendedCompiledFunctionField } from '@tryforge/forgescript';
 export declare class DataBase extends DataBaseManager {
     private emitter;
     database: string;
@@ -19,7 +19,7 @@ export declare class DataBase extends DataBaseManager {
     private static db;
     private static emitter;
     constructor(emitter: TypedEmitter<TransformEvents<IDBEvents>>, options?: IDataBaseOptions);
-    init(): Promise<void>;
+    init(ctx?: Context): Promise<void>;
     static make_intetifier(data: RecordData): string;
     static set(data: RecordData): Promise<void>;
     static get(data: RecordData): Promise<Record | null>;
@@ -68,7 +68,7 @@ export declare class DataBase extends DataBaseManager {
     } | {
         left: number;
     }>;
-    static restoreTimeouts(): Promise<void>;
+    static restoreTimeouts(ctx?: Context): Promise<void>;
     static query(query: string): Promise<any>;
 }
 //# sourceMappingURL=database.d.ts.map
