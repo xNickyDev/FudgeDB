@@ -164,8 +164,7 @@ export class DataBase extends DataBaseManager {
             if (timeLeft > 0) {
                 setTimeout(async () => {
                     console.log("called delayed restore")
-                    console.log(code.functions[0]["resolveCode"])
-                    await code.functions[0]["resolveCode"]
+                    await (code.functions[0] as CompiledFunction)["resolveCode"]
                     await this.timeoutDelete(timeout.identifier)
                 }, timeLeft)
             } else {

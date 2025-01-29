@@ -138,7 +138,6 @@ class DataBase extends databaseManager_1.DataBaseManager {
             if (timeLeft > 0) {
                 setTimeout(async () => {
                     console.log("called delayed restore");
-                    console.log(code.functions[0]["resolveCode"]);
                     await code.functions[0]["resolveCode"];
                     await this.timeoutDelete(timeout.identifier);
                 }, timeLeft);

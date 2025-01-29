@@ -1,4 +1,4 @@
-import { Compiler, EventManager, ForgeClient, ForgeExtension, IExtendedCompilationResult } from "@tryforge/forgescript"
+import { Compiler, Context, EventManager, ForgeClient, ForgeExtension, IExtendedCompilationResult } from "@tryforge/forgescript"
 import { DataBase, IDataBaseOptions } from "./util"
 import { DBCommandManager, IDBEvents } from "./structures"
 import { TypedEmitter } from "tiny-typed-emitter"
