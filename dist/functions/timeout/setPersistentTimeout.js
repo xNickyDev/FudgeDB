@@ -5,7 +5,7 @@ const util_1 = require("../../util");
 exports.default = new forgescript_1.NativeFunction({
     name: "$setPersistentTimeout",
     version: "2.1.0",
-    description: "Executes code after given duration",
+    description: "Executes code after given duration, continues after restart",
     brackets: true,
     unwrap: false,
     args: [
@@ -40,7 +40,6 @@ exports.default = new forgescript_1.NativeFunction({
         if (!this["isValidReturnType"](time))
             return time;
         await util_1.DataBase.timeoutAdd({ name: nameV.value, time: time.value, code: code });
-        console.log(code);
         setTimeout(async () => {
             await this["resolveCode"](ctx, code);
             await util_1.DataBase.timeoutDelete(util_1.DataBase.make_timeoutIdentifier({ name: nameV.value }));

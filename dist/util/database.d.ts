@@ -68,6 +68,7 @@ export declare class DataBase extends DataBaseManager {
     } | {
         left: number;
     }>;
+    static restoreTimeouts(): Promise<void>;
     static query(query: string): Promise<any>;
 }
 //# sourceMappingURL=database.d.ts.map

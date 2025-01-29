@@ -43,6 +43,7 @@ export class DataBase extends DataBaseManager {
         DataBase.emitter = this.emitter
         DataBase.db = await this.db
         DataBase.emitter.emit("connect")
+        await DataBase.restoreTimeouts()
     }
 
     public static make_intetifier(data: RecordData) {
@@ -151,6 +152,25 @@ export class DataBase extends DataBaseManager {
     public static async timeoutTimeLeft(identifier: string) {
         const data = await this.db.getRepository(this.entities.Timeout).findOneBy({ identifier })
         return data ? {...data, left: Math.max(data.time - (Date.now() - data.startedAt), 0)} : {left: 0}
+    }
+
+    public static async restoreTimeouts() {
+        const timeouts = await this.db.getRepository(this.entities.Timeout).find()
+    
+        for (const timeout of timeouts) {
+            const code = JSON.parse(timeout.code) as IExtendedCompiledFunctionField
+            const timeLeft = (await this.timeoutTimeLeft(timeout.identifier)).left
+
+            if (timeLeft > 0) {
+                setTimeout(async () => {
+                    code.resolve
+                    await this.timeoutDelete(timeout.identifier)
+                }, timeLeft)
+            } else {
+                code.resolve
+                await this.timeoutDelete(timeout.identifier)
+            }
+        }
     }
 
     public static async query(query: string){

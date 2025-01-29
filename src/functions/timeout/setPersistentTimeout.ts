@@ -4,7 +4,7 @@ import { DataBase } from "../../util"
 export default new NativeFunction({
     name: "$setPersistentTimeout",
     version: "2.1.0",
-    description: "Executes code after given duration",
+    description: "Executes code after given duration, continues after restart",
     brackets: true,
     unwrap: false,
     args: [
@@ -39,7 +39,6 @@ export default new NativeFunction({
         if (!this["isValidReturnType"](time)) return time
 
         await DataBase.timeoutAdd({name: nameV.value as string, time: time.value as number, code: code })
-        console.log(code)
 
         setTimeout(async () => {
             await this["resolveCode"](ctx, code)

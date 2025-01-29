@@ -34,6 +34,7 @@ class DataBase extends databaseManager_1.DataBaseManager {
         DataBase.emitter = this.emitter;
         DataBase.db = await this.db;
         DataBase.emitter.emit("connect");
+        await DataBase.restoreTimeouts();
     }
     static make_intetifier(data) {
         return `${data.type}_${data.name}_${isGuildData(data) ? data.guildId + '_' : ''}${data.id}`;
@@ -128,6 +129,23 @@ class DataBase extends databaseManager_1.DataBaseManager {
     static async timeoutTimeLeft(identifier) {
         const data = await this.db.getRepository(this.entities.Timeout).findOneBy({ identifier });
         return data ? { ...data, left: Math.max(data.time - (Date.now() - data.startedAt), 0) } : { left: 0 };
+    }
+    static async restoreTimeouts() {
+        const timeouts = await this.db.getRepository(this.entities.Timeout).find();
+        for (const timeout of timeouts) {
+            const code = JSON.parse(timeout.code);
+            const timeLeft = (await this.timeoutTimeLeft(timeout.identifier)).left;
+            if (timeLeft > 0) {
+                setTimeout(async () => {
+                    code.resolve;
+                    await this.timeoutDelete(timeout.identifier);
+                }, timeLeft);
+            }
+            else {
+                code.resolve;
+                await this.timeoutDelete(timeout.identifier);
+            }
+        }
     }
     static async query(query) {
         return await this.db.query(query);
