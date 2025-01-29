@@ -41,6 +41,7 @@ export default new NativeFunction({
         await DataBase.timeoutAdd({name: nameV.value as string, time: time.value as number, code: code })
 
         setTimeout(async () => {
+            console.log(code)
             await this["resolveCode"](ctx, code)
             await DataBase.timeoutDelete(DataBase.make_timeoutIdentifier({name: nameV.value}))
         }, time.value as number)

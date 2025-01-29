@@ -41,6 +41,7 @@ exports.default = new forgescript_1.NativeFunction({
             return time;
         await util_1.DataBase.timeoutAdd({ name: nameV.value, time: time.value, code: code });
         setTimeout(async () => {
+            console.log(code);
             await this["resolveCode"](ctx, code);
             await util_1.DataBase.timeoutDelete(util_1.DataBase.make_timeoutIdentifier({ name: nameV.value }));
         }, time.value);
