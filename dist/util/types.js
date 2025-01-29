@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MongoCooldown = exports.MongoRecord = exports.Cooldown = exports.SQLiteRecord = exports.Record = void 0;
+exports.MongoTimeout = exports.MongoCooldown = exports.MongoRecord = exports.Timeout = exports.Cooldown = exports.SQLiteRecord = exports.Record = void 0;
 const typeorm_1 = require("typeorm");
 let Record = class Record {
     identifier;
@@ -114,6 +114,37 @@ __decorate([
 exports.Cooldown = Cooldown = __decorate([
     (0, typeorm_1.Entity)()
 ], Cooldown);
+let Timeout = class Timeout {
+    identifier;
+    name;
+    startedAt;
+    time;
+    code;
+};
+exports.Timeout = Timeout;
+__decorate([
+    (0, typeorm_1.PrimaryColumn)(),
+    __metadata("design:type", String)
+], Timeout.prototype, "identifier", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Timeout.prototype, "name", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Timeout.prototype, "startedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Timeout.prototype, "time", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Timeout.prototype, "code", void 0);
+exports.Timeout = Timeout = __decorate([
+    (0, typeorm_1.Entity)()
+], Timeout);
 let MongoRecord = class MongoRecord extends Record {
     mongoId;
 };
@@ -136,4 +167,15 @@ __decorate([
 exports.MongoCooldown = MongoCooldown = __decorate([
     (0, typeorm_1.Entity)()
 ], MongoCooldown);
+let MongoTimeout = class MongoTimeout extends Timeout {
+    mongoId;
+};
+exports.MongoTimeout = MongoTimeout;
+__decorate([
+    (0, typeorm_1.ObjectIdColumn)(),
+    __metadata("design:type", String)
+], MongoTimeout.prototype, "mongoId", void 0);
+exports.MongoTimeout = MongoTimeout = __decorate([
+    (0, typeorm_1.Entity)()
+], MongoTimeout);
 //# sourceMappingURL=types.js.map

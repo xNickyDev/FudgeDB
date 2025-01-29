@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryColumn, ObjectIdColumn } from "typeorm"
 import { IDBEvents } from "../structures";
+import { IExtendedCompiledFunctionField } from "@tryforge/forgescript";
 
 export type IDataBaseOptions = ({
     type: "mysql" | "postgres";
@@ -98,6 +99,32 @@ export type CooldownData = {
 }
 
 @Entity()
+export class Timeout {
+    @PrimaryColumn()
+    identifier!: string;
+
+    @Column()
+    name!: string;
+
+    @Column()
+    startedAt!: number;
+
+    @Column()
+    time!: number;
+
+    @Column()
+    code!: string;
+}
+
+export type TimeoutData = {
+    identifier?: string;
+    name?: string;
+    startedAt?: number;
+    time?: number;
+    code?: IExtendedCompiledFunctionField;
+}
+
+@Entity()
 export class MongoRecord extends Record {
     @ObjectIdColumn()
     mongoId?: string
@@ -105,6 +132,12 @@ export class MongoRecord extends Record {
 
 @Entity()
 export class MongoCooldown extends Cooldown {
+    @ObjectIdColumn()
+    mongoId?: string
+}
+
+@Entity()
+export class MongoTimeout extends Timeout {
     @ObjectIdColumn()
     mongoId?: string
 }
