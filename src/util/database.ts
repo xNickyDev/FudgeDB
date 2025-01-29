@@ -5,7 +5,7 @@ import { IDBEvents } from '../structures';
 import { TransformEvents } from '..';
 import 'reflect-metadata';
 import { DataBaseManager } from './databaseManager';
-import { CompiledFunction, Context, IExtendedCompiledFunctionField } from '@tryforge/forgescript';
+import { CompiledFunction, IExtendedCompiledFunctionField } from '@tryforge/forgescript';
 
 function isGuildData(data: RecordData): data is GuildData {
     return ['member', 'channel', 'role'].includes(data.type!);
@@ -164,7 +164,7 @@ export class DataBase extends DataBaseManager {
             if (timeLeft > 0) {
                 setTimeout(async () => {
                     console.log("called delayed restore")
-                    await (code.functions[0] as CompiledFunction)["resolveCode"]
+                    await (code.functions[0] as CompiledFunction)["resolveCode"](code)
                     await this.timeoutDelete(timeout.identifier)
                 }, timeLeft)
             } else {
