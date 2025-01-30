@@ -19,7 +19,7 @@ export declare class DataBase extends DataBaseManager {
     private static db;
     private static emitter;
     constructor(emitter: TypedEmitter<TransformEvents<IDBEvents>>, options?: IDataBaseOptions);
-    init(ctx?: Context): Promise<void>;
+    init(): Promise<void>;
     static make_intetifier(data: RecordData): string;
     static set(data: RecordData): Promise<void>;
     static get(data: RecordData): Promise<Record | null>;
@@ -45,6 +45,7 @@ export declare class DataBase extends DataBaseManager {
         name: string;
         time: number;
         code: CompiledFunction;
+        ctx: Context;
     }): Promise<Timeout | import("typeorm").UpdateResult>;
     static cdDelete(identifier: string): Promise<void>;
     static timeoutDelete(identifier: string): Promise<void>;
@@ -65,10 +66,11 @@ export declare class DataBase extends DataBaseManager {
         startedAt: number;
         time: number;
         code: string;
+        ctx: string;
     } | {
         left: number;
     }>;
-    static restoreTimeouts(ctx?: Context): Promise<void>;
+    static restoreTimeouts(): Promise<void>;
     static query(query: string): Promise<any>;
 }
 //# sourceMappingURL=database.d.ts.map

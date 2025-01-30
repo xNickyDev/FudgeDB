@@ -1,5 +1,5 @@
 import { IDBEvents } from "../structures";
-import { CompiledFunction } from "@tryforge/forgescript";
+import { CompiledFunction, Context } from "@tryforge/forgescript";
 export type IDataBaseOptions = ({
     type: "mysql" | "postgres";
     url?: string;
@@ -67,6 +67,7 @@ export declare class Timeout {
     startedAt: number;
     time: number;
     code: string;
+    ctx: string;
 }
 export type TimeoutData = {
     identifier?: string;
@@ -74,6 +75,7 @@ export type TimeoutData = {
     startedAt?: number;
     time?: number;
     code?: CompiledFunction;
+    ctx?: Context;
 };
 export declare class MongoRecord extends Record {
     mongoId?: string;

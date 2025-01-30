@@ -5,7 +5,7 @@ import { IDBEvents } from '../structures';
 import { TransformEvents } from '..';
 import 'reflect-metadata';
 import { DataBaseManager } from './databaseManager';
-import { CompiledFunction, Context, IExtendedCompiledFunctionField } from '@tryforge/forgescript';
+import { CompiledFunction, Context, IExtendedCompiledFunction, IExtendedCompiledFunctionField } from '@tryforge/forgescript';
 
 function isGuildData(data: RecordData): data is GuildData {
     return ['member', 'channel', 'role'].includes(data.type!);
@@ -39,11 +39,11 @@ export class DataBase extends DataBaseManager {
         }
     }
 
-    public async init(ctx?: Context) {
+    public async init() {
         DataBase.emitter = this.emitter
         DataBase.db = await this.db
         DataBase.emitter.emit("connect")
-        await DataBase.restoreTimeouts(ctx)
+        await DataBase.restoreTimeouts()
     }
 
     public static make_intetifier(data: RecordData) {
@@ -123,13 +123,14 @@ export class DataBase extends DataBaseManager {
         else return await this.db.getRepository(this.entities.Cooldown).save(cd)
     }
 
-    public static async timeoutAdd(data: {name: string, time: number, code: CompiledFunction}){
+    public static async timeoutAdd(data: {name: string, time: number, code: CompiledFunction, ctx: Context}){
         const to = new this.entities.Timeout()
         to.identifier = this.make_timeoutIdentifier(data)
         to.name = data.name
         to.startedAt = Date.now()
         to.time = data.time
         to.code = JSON.stringify(data.code)
+        to.ctx = JSON.stringify(data.ctx)
 
         const oldTO = await this.db.getRepository(this.entities.Timeout).findOneBy({ identifier: this.make_timeoutIdentifier(data) })
         if(oldTO && this.type == 'mongodb') return await this.db.getRepository(this.entities.Timeout).update(oldTO, to);
@@ -154,16 +155,17 @@ export class DataBase extends DataBaseManager {
         return data ? {...data, left: Math.max(data.time - (Date.now() - data.startedAt), 0)} : {left: 0}
     }
 
-    public static async restoreTimeouts(ctx?: Context) {
+    public static async restoreTimeouts() {
         const timeouts = await this.db.getRepository(this.entities.Timeout).find()
     
         for (const timeout of timeouts) {
             const fn = JSON.parse(timeout.code) as CompiledFunction
+            const ctx = JSON.parse(timeout.ctx) as Context
             const timeLeft = (await this.timeoutTimeLeft(timeout.identifier)).left
 
             if (timeLeft > 0) {
                 setTimeout(async () => {
-                    fn["resolveCode"](ctx, fn.data.fields![2] as IExtendedCompiledFunctionField)
+                    await fn["resolveCode"](ctx, fn.data.fields![2] as IExtendedCompiledFunctionField)
                     await this.timeoutDelete(timeout.identifier)
                 }, timeLeft)
             } else {
