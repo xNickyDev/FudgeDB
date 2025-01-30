@@ -115,7 +115,7 @@ class DataBase extends databaseManager_1.DataBaseManager {
         await this.db.getRepository(this.entities.Cooldown).delete({ identifier });
     }
     static async timeoutDelete(name) {
-        return await this.db.getRepository(this.entities.Timeout).delete({ name });
+        await this.db.getRepository(this.entities.Timeout).delete({ name });
     }
     static async cdTimeLeft(identifier) {
         const data = await this.db.getRepository(this.entities.Cooldown).findOneBy({ identifier });

@@ -42,7 +42,7 @@ export declare class DataBase extends DataBaseManager {
         time: number;
     }): Promise<Timeout | import("typeorm").UpdateResult>;
     static cdDelete(identifier: string): Promise<void>;
-    static timeoutDelete(name: string): Promise<import("typeorm").DeleteResult>;
+    static timeoutDelete(name: string): Promise<void>;
     static cdTimeLeft(identifier: string): Promise<{
         left: number;
         identifier: string;

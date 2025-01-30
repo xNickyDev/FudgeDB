@@ -4,6 +4,7 @@ const forgescript_1 = require("@tryforge/forgescript");
 const util_1 = require("../../util");
 exports.default = new forgescript_1.NativeFunction({
     name: "$deletePersistentTimeout",
+    version: "2.1.0",
     description: "Deletes a persistent set timeout, returns bool",
     brackets: true,
     unwrap: true,
@@ -18,7 +19,9 @@ exports.default = new forgescript_1.NativeFunction({
     ],
     output: forgescript_1.ArgType.Boolean,
     async execute(ctx, [name]) {
-        return this.success(!!(await util_1.DataBase.timeoutDelete(name)));
+        const success = await util_1.DataBase.timeoutExists(name);
+        await util_1.DataBase.timeoutDelete(name);
+        return this.success(success);
     },
 });
 //# sourceMappingURL=deletePersistentTimeout.js.map

@@ -135,7 +135,7 @@ export class DataBase extends DataBaseManager {
     }
 
     public static async timeoutDelete(name: string) {
-        return await this.db.getRepository(this.entities.Timeout).delete({name})
+        await this.db.getRepository(this.entities.Timeout).delete({name})
     }
 
     public static async cdTimeLeft(identifier: string) {

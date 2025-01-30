@@ -1,4 +1,4 @@
-import { ArgType, IExtendedCompiledFunctionField, NativeFunction } from "@tryforge/forgescript"
+import { ArgType, NativeFunction } from "@tryforge/forgescript"
 import { DataBase } from "../../util"
 
 export default new NativeFunction({
@@ -18,6 +18,8 @@ export default new NativeFunction({
     ],
     output: ArgType.Boolean,
     async execute(ctx, [name]) {
-        return this.success(!!(await DataBase.timeoutDelete(name)))
+        const success = await DataBase.timeoutExists(name)
+        await DataBase.timeoutDelete(name)
+        return this.success(success)
     },
 })
