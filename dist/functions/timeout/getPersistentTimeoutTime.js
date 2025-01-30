@@ -3,9 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const forgescript_1 = require("@tryforge/forgescript");
 const util_1 = require("../../util");
 exports.default = new forgescript_1.NativeFunction({
-    name: "$deletePersistentTimeout",
-    version: "2.1.0",
-    description: "Deletes a persistent timeout, returns bool",
+    name: "$getPersistentTimeoutTime",
+    description: "Gets the remaining time of a persistent timeout",
     brackets: true,
     unwrap: true,
     args: [
@@ -17,11 +16,9 @@ exports.default = new forgescript_1.NativeFunction({
             required: true,
         },
     ],
-    output: forgescript_1.ArgType.Boolean,
+    output: forgescript_1.ArgType.Number,
     async execute(ctx, [name]) {
-        const success = await util_1.DataBase.timeoutExists(name);
-        await util_1.DataBase.timeoutDelete(name);
-        return this.success(success);
+        return this.success((await util_1.DataBase.timeoutTimeLeft(name)).left);
     },
 });
-//# sourceMappingURL=deletePersistentTimeout.js.map
+//# sourceMappingURL=getPersistentTimeoutTime.js.map

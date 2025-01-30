@@ -2,9 +2,9 @@ import { ArgType, NativeFunction } from "@tryforge/forgescript"
 import { DataBase } from "../../util"
 
 export default new NativeFunction({
-    name: "$deletePersistentTimeout",
+    name: "$getPersistentTimeoutTime",
     version: "2.1.0",
-    description: "Deletes a persistent timeout, returns bool",
+    description: "Gets the remaining time of a persistent timeout",
     brackets: true,
     unwrap: true,
     args: [
@@ -16,10 +16,8 @@ export default new NativeFunction({
             required: true,
         },
     ],
-    output: ArgType.Boolean,
+    output: ArgType.Number,
     async execute(ctx, [name]) {
-        const success = await DataBase.timeoutExists(name)
-        await DataBase.timeoutDelete(name)
-        return this.success(success)
+        return this.success((await DataBase.timeoutTimeLeft(name)).left)
     },
 })
