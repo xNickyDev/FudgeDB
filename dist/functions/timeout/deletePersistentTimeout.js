@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const forgescript_1 = require("@tryforge/forgescript");
 const util_1 = require("../../util");
 exports.default = new forgescript_1.NativeFunction({
-    name: "$setPersistentTimeout",
+    name: "$deletePersistentTimeout",
     description: "Deletes a persistent set timeout, returns bool",
     brackets: true,
     unwrap: true,

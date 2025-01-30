@@ -2,7 +2,8 @@ import { ArgType, IExtendedCompiledFunctionField, NativeFunction } from "@tryfor
 import { DataBase } from "../../util"
 
 export default new NativeFunction({
-    name: "$setPersistentTimeout",
+    name: "$deletePersistentTimeout",
+    version: "2.1.0",
     description: "Deletes a persistent set timeout, returns bool",
     brackets: true,
     unwrap: true,
