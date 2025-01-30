@@ -99,7 +99,7 @@ export type CooldownData = {
 
 @Entity()
 export class Timeout {
-    @Column()
+    @PrimaryColumn()
     name!: string;
 
     @Column()
