@@ -32,9 +32,6 @@ export declare class DataBase extends DataBaseManager {
         name?: string;
         id?: string;
     }): string;
-    static make_timeoutIdentifier(data: {
-        name?: string;
-    }): string;
     static cdAdd(data: {
         name: string;
         id?: string;
@@ -45,7 +42,7 @@ export declare class DataBase extends DataBaseManager {
         time: number;
     }): Promise<Timeout | import("typeorm").UpdateResult>;
     static cdDelete(identifier: string): Promise<void>;
-    static timeoutDelete(identifier: string): Promise<void>;
+    static timeoutDelete(name: string): Promise<import("typeorm").DeleteResult>;
     static cdTimeLeft(identifier: string): Promise<{
         left: number;
         identifier: string;
@@ -56,15 +53,15 @@ export declare class DataBase extends DataBaseManager {
     } | {
         left: number;
     }>;
-    static timeoutTimeLeft(identifier: string): Promise<{
+    static timeoutTimeLeft(name: string): Promise<{
         left: number;
-        identifier: string;
         name: string;
         startedAt: number;
         time: number;
     } | {
         left: number;
     }>;
+    static timeoutExists(name: string): Promise<boolean>;
     static restoreTimeouts(): Promise<void>;
     static query(query: string): Promise<any>;
 }

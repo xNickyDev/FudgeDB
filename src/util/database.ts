@@ -106,10 +106,6 @@ export class DataBase extends DataBaseManager {
         return `${data.name}${data.id ? '_'+data.id : ''}`
     }
 
-    public static make_timeoutIdentifier(data: {name?: string}){
-        return `${data.name}`
-    }
-
     public static async cdAdd(data: {name: string, id?: string, duration: number}){
         const cd = new this.entities.Cooldown()
         cd.identifier = this.make_cdIdentifier(data)
@@ -125,12 +121,11 @@ export class DataBase extends DataBaseManager {
 
     public static async timeoutAdd(data: {name: string, time: number}){
         const to = new this.entities.Timeout()
-        to.identifier = this.make_timeoutIdentifier(data)
         to.name = data.name
         to.startedAt = Date.now()
         to.time = data.time
 
-        const oldTO = await this.db.getRepository(this.entities.Timeout).findOneBy({ identifier: this.make_timeoutIdentifier(data) })
+        const oldTO = await this.db.getRepository(this.entities.Timeout).findOneBy({ name: to.name })
         if(oldTO && this.type == 'mongodb') return await this.db.getRepository(this.entities.Timeout).update(oldTO, to);
         else return await this.db.getRepository(this.entities.Timeout).save(to)
     }
@@ -139,8 +134,8 @@ export class DataBase extends DataBaseManager {
         await this.db.getRepository(this.entities.Cooldown).delete({identifier})
     }
 
-    public static async timeoutDelete(identifier: string) {
-        await this.db.getRepository(this.entities.Timeout).delete({identifier})
+    public static async timeoutDelete(name: string) {
+        return await this.db.getRepository(this.entities.Timeout).delete({name})
     }
 
     public static async cdTimeLeft(identifier: string) {
@@ -148,23 +143,29 @@ export class DataBase extends DataBaseManager {
         return data ? {...data, left: Math.max(data.duration - (Date.now() - data.startedAt), 0)} : {left: 0}
     }
 
-    public static async timeoutTimeLeft(identifier: string) {
-        const data = await this.db.getRepository(this.entities.Timeout).findOneBy({ identifier })
+    public static async timeoutTimeLeft(name: string) {
+        const data = await this.db.getRepository(this.entities.Timeout).findOneBy({ name })
         return data ? {...data, left: Math.max(data.time - (Date.now() - data.startedAt), 0)} : {left: 0}
+    }
+
+    public static async timeoutExists(name: string) {
+        return !!(await this.db.getRepository(this.entities.Timeout).findOneBy({ name }))
     }
 
     public static async restoreTimeouts() {
         const timeouts = await this.db.getRepository(this.entities.Timeout).find()
     
         for (const timeout of timeouts) {
-            const timeLeft = (await this.timeoutTimeLeft(timeout.identifier)).left
+            const timeLeft = (await this.timeoutTimeLeft(timeout.name)).left
 
             if (timeLeft > 0) {
                 setTimeout(async () => {
-                    await this.timeoutDelete(timeout.identifier)
+                    if (await this.timeoutExists(timeout.name)) {
+                        await this.timeoutDelete(timeout.name)
+                    }
                 }, timeLeft)
             } else {
-                await this.timeoutDelete(timeout.identifier)
+                await this.timeoutDelete(timeout.name)
             }
         }
     }

@@ -61,13 +61,11 @@ export type CooldownData = {
     duration?: number;
 };
 export declare class Timeout {
-    identifier: string;
     name: string;
     startedAt: number;
     time: number;
 }
 export type TimeoutData = {
-    identifier?: string;
     name?: string;
     startedAt?: number;
     time?: number;

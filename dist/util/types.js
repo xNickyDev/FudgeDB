@@ -115,16 +115,11 @@ exports.Cooldown = Cooldown = __decorate([
     (0, typeorm_1.Entity)()
 ], Cooldown);
 let Timeout = class Timeout {
-    identifier;
     name;
     startedAt;
     time;
 };
 exports.Timeout = Timeout;
-__decorate([
-    (0, typeorm_1.PrimaryColumn)(),
-    __metadata("design:type", String)
-], Timeout.prototype, "identifier", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

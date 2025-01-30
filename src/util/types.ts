@@ -99,9 +99,6 @@ export type CooldownData = {
 
 @Entity()
 export class Timeout {
-    @PrimaryColumn()
-    identifier!: string;
-
     @Column()
     name!: string;
 
@@ -113,7 +110,6 @@ export class Timeout {
 }
 
 export type TimeoutData = {
-    identifier?: string;
     name?: string;
     startedAt?: number;
     time?: number;
