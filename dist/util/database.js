@@ -137,7 +137,7 @@ class DataBase extends databaseManager_1.DataBaseManager {
             const timeLeft = (await this.timeoutTimeLeft(timeout.identifier)).left;
             if (timeLeft > 0) {
                 setTimeout(async () => {
-                    console.log(code.value);
+                    console.log(code.resolve);
                     await this.timeoutDelete(timeout.identifier);
                 }, timeLeft);
             }
