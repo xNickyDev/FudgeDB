@@ -133,16 +133,15 @@ class DataBase extends databaseManager_1.DataBaseManager {
     static async restoreTimeouts(ctx) {
         const timeouts = await this.db.getRepository(this.entities.Timeout).find();
         for (const timeout of timeouts) {
-            const code = JSON.parse(timeout.code);
+            const fn = JSON.parse(timeout.code);
             const timeLeft = (await this.timeoutTimeLeft(timeout.identifier)).left;
             if (timeLeft > 0) {
                 setTimeout(async () => {
-                    console.log(code.resolve);
+                    fn["resolveCode"](ctx, fn.data.fields[2]);
                     await this.timeoutDelete(timeout.identifier);
                 }, timeLeft);
             }
             else {
-                code.functions[0].execute;
                 await this.timeoutDelete(timeout.identifier);
             }
         }

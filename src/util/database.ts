@@ -123,7 +123,7 @@ export class DataBase extends DataBaseManager {
         else return await this.db.getRepository(this.entities.Cooldown).save(cd)
     }
 
-    public static async timeoutAdd(data: {name: string, time: number, code: IExtendedCompiledFunctionField}){
+    public static async timeoutAdd(data: {name: string, time: number, code: CompiledFunction}){
         const to = new this.entities.Timeout()
         to.identifier = this.make_timeoutIdentifier(data)
         to.name = data.name
@@ -158,16 +158,16 @@ export class DataBase extends DataBaseManager {
         const timeouts = await this.db.getRepository(this.entities.Timeout).find()
     
         for (const timeout of timeouts) {
-            const code = JSON.parse(timeout.code) as IExtendedCompiledFunctionField
+            const fn = JSON.parse(timeout.code) as CompiledFunction
             const timeLeft = (await this.timeoutTimeLeft(timeout.identifier)).left
 
             if (timeLeft > 0) {
                 setTimeout(async () => {
-                    console.log(code.resolve) 
+                    fn["resolveCode"](ctx, fn.data.fields![2] as IExtendedCompiledFunctionField)
                     await this.timeoutDelete(timeout.identifier)
                 }, timeLeft)
             } else {
-                code.functions[0].execute
+                
                 await this.timeoutDelete(timeout.identifier)
             }
         }

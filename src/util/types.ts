@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryColumn, ObjectIdColumn } from "typeorm"
 import { IDBEvents } from "../structures";
-import { IExtendedCompiledFunctionField } from "@tryforge/forgescript";
+import { CompiledFunction, IExtendedCompiledFunctionField } from "@tryforge/forgescript";
 
 export type IDataBaseOptions = ({
     type: "mysql" | "postgres";
@@ -121,7 +121,7 @@ export type TimeoutData = {
     name?: string;
     startedAt?: number;
     time?: number;
-    code?: IExtendedCompiledFunctionField;
+    code?: CompiledFunction;
 }
 
 @Entity()
