@@ -119,8 +119,6 @@ let Timeout = class Timeout {
     name;
     startedAt;
     time;
-    code;
-    ctx;
 };
 exports.Timeout = Timeout;
 __decorate([
@@ -139,14 +137,6 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Timeout.prototype, "time", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Timeout.prototype, "code", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Timeout.prototype, "ctx", void 0);
 exports.Timeout = Timeout = __decorate([
     (0, typeorm_1.Entity)()
 ], Timeout);

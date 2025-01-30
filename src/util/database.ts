@@ -123,14 +123,12 @@ export class DataBase extends DataBaseManager {
         else return await this.db.getRepository(this.entities.Cooldown).save(cd)
     }
 
-    public static async timeoutAdd(data: {name: string, time: number, code: CompiledFunction, ctx: Context}){
+    public static async timeoutAdd(data: {name: string, time: number}){
         const to = new this.entities.Timeout()
         to.identifier = this.make_timeoutIdentifier(data)
         to.name = data.name
         to.startedAt = Date.now()
         to.time = data.time
-        to.code = JSON.stringify(data.code)
-        to.ctx = JSON.stringify(data.ctx)
 
         const oldTO = await this.db.getRepository(this.entities.Timeout).findOneBy({ identifier: this.make_timeoutIdentifier(data) })
         if(oldTO && this.type == 'mongodb') return await this.db.getRepository(this.entities.Timeout).update(oldTO, to);
@@ -159,17 +157,13 @@ export class DataBase extends DataBaseManager {
         const timeouts = await this.db.getRepository(this.entities.Timeout).find()
     
         for (const timeout of timeouts) {
-            const fn = JSON.parse(timeout.code) as CompiledFunction
-            const ctx = JSON.parse(timeout.ctx) as Context
             const timeLeft = (await this.timeoutTimeLeft(timeout.identifier)).left
 
             if (timeLeft > 0) {
                 setTimeout(async () => {
-                    await fn["resolveCode"](ctx, fn.data.fields![2] as IExtendedCompiledFunctionField)
                     await this.timeoutDelete(timeout.identifier)
                 }, timeLeft)
             } else {
-                
                 await this.timeoutDelete(timeout.identifier)
             }
         }

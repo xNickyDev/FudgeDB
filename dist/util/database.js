@@ -109,8 +109,6 @@ class DataBase extends databaseManager_1.DataBaseManager {
         to.name = data.name;
         to.startedAt = Date.now();
         to.time = data.time;
-        to.code = JSON.stringify(data.code);
-        to.ctx = JSON.stringify(data.ctx);
         const oldTO = await this.db.getRepository(this.entities.Timeout).findOneBy({ identifier: this.make_timeoutIdentifier(data) });
         if (oldTO && this.type == 'mongodb')
             return await this.db.getRepository(this.entities.Timeout).update(oldTO, to);
@@ -134,12 +132,9 @@ class DataBase extends databaseManager_1.DataBaseManager {
     static async restoreTimeouts() {
         const timeouts = await this.db.getRepository(this.entities.Timeout).find();
         for (const timeout of timeouts) {
-            const fn = JSON.parse(timeout.code);
-            const ctx = JSON.parse(timeout.ctx);
             const timeLeft = (await this.timeoutTimeLeft(timeout.identifier)).left;
             if (timeLeft > 0) {
                 setTimeout(async () => {
-                    await fn["resolveCode"](ctx, fn.data.fields[2]);
                     await this.timeoutDelete(timeout.identifier);
                 }, timeLeft);
             }
