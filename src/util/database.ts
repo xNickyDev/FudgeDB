@@ -163,7 +163,7 @@ export class DataBase extends DataBaseManager {
 
             if (timeLeft > 0) {
                 setTimeout(async () => {
-                    console.log(code.functions[0]) 
+                    console.log(code.value) 
                     await this.timeoutDelete(timeout.identifier)
                 }, timeLeft)
             } else {
