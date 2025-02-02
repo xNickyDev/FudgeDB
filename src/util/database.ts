@@ -161,10 +161,12 @@ export class DataBase extends DataBaseManager {
             if (timeLeft > 0) {
                 setTimeout(async () => {
                     if (await this.timeoutExists(timeout.name)) {
+                        // resolve code
                         await this.timeoutDelete(timeout.name)
                     }
                 }, timeLeft)
             } else {
+                // resolve code
                 await this.timeoutDelete(timeout.name)
             }
         }
