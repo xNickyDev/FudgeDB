@@ -4,7 +4,6 @@ import { IDBEvents } from '../structures';
 import { TransformEvents } from '..';
 import 'reflect-metadata';
 import { DataBaseManager } from './databaseManager';
-import { CompiledFunction } from '@tryforge/forgescript';
 export declare class DataBase extends DataBaseManager {
     private emitter;
     database: string;
@@ -59,7 +58,6 @@ export declare class DataBase extends DataBaseManager {
         name: string;
         startedAt: number;
         time: number;
-        code: CompiledFunction;
     } | {
         left: number;
     }>;
