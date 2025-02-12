@@ -41,7 +41,6 @@ export declare class DataBase extends DataBaseManager {
     static timeoutAdd(data: {
         name: string;
         time: number;
-        code: CompiledFunction;
     }): Promise<Timeout | import("typeorm").UpdateResult>;
     static cdDelete(identifier: string): Promise<void>;
     static timeoutDelete(name: string): Promise<void>;

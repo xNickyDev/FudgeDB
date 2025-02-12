@@ -4,6 +4,7 @@ const forgescript_1 = require("@tryforge/forgescript");
 const util_1 = require("../../util");
 exports.default = new forgescript_1.NativeFunction({
     name: "$addDB",
+    version: "2.1.0",
     aliases: ["$addDataBase", "$addRecords"],
     description: "Adds records to the database",
     unwrap: true,

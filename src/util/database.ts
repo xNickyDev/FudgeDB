@@ -119,12 +119,11 @@ export class DataBase extends DataBaseManager {
         else return await this.db.getRepository(this.entities.Cooldown).save(cd)
     }
 
-    public static async timeoutAdd(data: {name: string, time: number, code: CompiledFunction}){
+    public static async timeoutAdd(data: {name: string, time: number}){
         const to = new this.entities.Timeout()
         to.name = data.name
         to.startedAt = Date.now()
         to.time = data.time
-        to.code = data.code
 
         const oldTO = await this.db.getRepository(this.entities.Timeout).findOneBy({ name: to.name })
         if(oldTO && this.type == 'mongodb') return await this.db.getRepository(this.entities.Timeout).update(oldTO, to)
