@@ -4,6 +4,7 @@ import { IDBEvents } from '../structures';
 import { TransformEvents } from '..';
 import 'reflect-metadata';
 import { DataBaseManager } from './databaseManager';
+import { CompiledFunction } from '@tryforge/forgescript';
 export declare class DataBase extends DataBaseManager {
     private emitter;
     database: string;
@@ -40,6 +41,7 @@ export declare class DataBase extends DataBaseManager {
     static timeoutAdd(data: {
         name: string;
         time: number;
+        code: CompiledFunction;
     }): Promise<Timeout | import("typeorm").UpdateResult>;
     static cdDelete(identifier: string): Promise<void>;
     static timeoutDelete(name: string): Promise<void>;
@@ -58,6 +60,7 @@ export declare class DataBase extends DataBaseManager {
         name: string;
         startedAt: number;
         time: number;
+        code: CompiledFunction;
     } | {
         left: number;
     }>;

@@ -38,7 +38,7 @@ export default new NativeFunction({
         const time = await this["resolveUnhandledArg"](ctx, 1)
         if (!this["isValidReturnType"](time)) return time
 
-        await DataBase.timeoutAdd({name: nameV.value as string, time: time.value as number})
+        await DataBase.timeoutAdd({name: nameV.value as string, time: time.value as number, code: this})
 
         setTimeout(async () => {
             if (await DataBase.timeoutExists(nameV.value)) {

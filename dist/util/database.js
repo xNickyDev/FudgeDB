@@ -105,6 +105,7 @@ class DataBase extends databaseManager_1.DataBaseManager {
         to.name = data.name;
         to.startedAt = Date.now();
         to.time = data.time;
+        to.code = data.code;
         const oldTO = await this.db.getRepository(this.entities.Timeout).findOneBy({ name: to.name });
         if (oldTO && this.type == 'mongodb')
             return await this.db.getRepository(this.entities.Timeout).update(oldTO, to);

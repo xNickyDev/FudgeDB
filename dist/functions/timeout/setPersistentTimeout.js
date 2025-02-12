@@ -39,7 +39,7 @@ exports.default = new forgescript_1.NativeFunction({
         const time = await this["resolveUnhandledArg"](ctx, 1);
         if (!this["isValidReturnType"](time))
             return time;
-        await util_1.DataBase.timeoutAdd({ name: nameV.value, time: time.value });
+        await util_1.DataBase.timeoutAdd({ name: nameV.value, time: time.value, code: this });
         setTimeout(async () => {
             if (await util_1.DataBase.timeoutExists(nameV.value)) {
                 await this["resolveCode"](ctx, code);

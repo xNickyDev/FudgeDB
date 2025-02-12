@@ -5,7 +5,7 @@ import { IDBEvents } from '../structures';
 import { TransformEvents } from '..';
 import 'reflect-metadata';
 import { DataBaseManager } from './databaseManager';
-import { CompiledFunction, Context, IExtendedCompiledFunction, IExtendedCompiledFunctionField } from '@tryforge/forgescript';
+import { CompiledFunction, Context, IExtendedCompiledFunction, IExtendedCompiledFunctionField, Interpreter } from '@tryforge/forgescript';
 
 function isGuildData(data: RecordData): data is GuildData {
     return ['member', 'channel', 'role'].includes(data.type!);
@@ -119,14 +119,15 @@ export class DataBase extends DataBaseManager {
         else return await this.db.getRepository(this.entities.Cooldown).save(cd)
     }
 
-    public static async timeoutAdd(data: {name: string, time: number}){
+    public static async timeoutAdd(data: {name: string, time: number, code: CompiledFunction}){
         const to = new this.entities.Timeout()
         to.name = data.name
         to.startedAt = Date.now()
         to.time = data.time
+        to.code = data.code
 
         const oldTO = await this.db.getRepository(this.entities.Timeout).findOneBy({ name: to.name })
-        if(oldTO && this.type == 'mongodb') return await this.db.getRepository(this.entities.Timeout).update(oldTO, to);
+        if(oldTO && this.type == 'mongodb') return await this.db.getRepository(this.entities.Timeout).update(oldTO, to)
         else return await this.db.getRepository(this.entities.Timeout).save(to)
     }
 

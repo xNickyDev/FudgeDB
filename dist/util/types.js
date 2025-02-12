@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoTimeout = exports.MongoCooldown = exports.MongoRecord = exports.Timeout = exports.Cooldown = exports.SQLiteRecord = exports.Record = void 0;
 const typeorm_1 = require("typeorm");
+const forgescript_1 = require("@tryforge/forgescript");
 let Record = class Record {
     identifier;
     name;
@@ -118,6 +119,7 @@ let Timeout = class Timeout {
     name;
     startedAt;
     time;
+    code;
 };
 exports.Timeout = Timeout;
 __decorate([
@@ -132,6 +134,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Timeout.prototype, "time", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", forgescript_1.CompiledFunction)
+], Timeout.prototype, "code", void 0);
 exports.Timeout = Timeout = __decorate([
     (0, typeorm_1.Entity)()
 ], Timeout);
