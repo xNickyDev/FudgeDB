@@ -4,6 +4,7 @@ exports.DataBase = void 0;
 const types_1 = require("./types");
 require("reflect-metadata");
 const databaseManager_1 = require("./databaseManager");
+const forgescript_1 = require("@tryforge/forgescript");
 function isGuildData(data) {
     return ['member', 'channel', 'role'].includes(data.type);
 }
@@ -105,6 +106,8 @@ class DataBase extends databaseManager_1.DataBaseManager {
         to.name = data.name;
         to.startedAt = Date.now();
         to.time = data.time;
+        to.code = data.code;
+        to.ctx = data.ctx;
         const oldTO = await this.db.getRepository(this.entities.Timeout).findOneBy({ name: to.name });
         if (oldTO && this.type == 'mongodb')
             return await this.db.getRepository(this.entities.Timeout).update(oldTO, to);
@@ -132,16 +135,22 @@ class DataBase extends databaseManager_1.DataBaseManager {
         const timeouts = await this.db.getRepository(this.entities.Timeout).find();
         for (const timeout of timeouts) {
             const timeLeft = (await this.timeoutTimeLeft(timeout.name)).left;
+            const compiled = forgescript_1.Compiler.compile(timeout.code);
+            const ctx = JSON.parse(timeout.ctx);
             if (timeLeft > 0) {
                 setTimeout(async () => {
                     if (await this.timeoutExists(timeout.name)) {
-                        // resolve code
+                        await forgescript_1.Interpreter.run(ctx.clone({
+                            data: compiled
+                        }));
                         await this.timeoutDelete(timeout.name);
                     }
                 }, timeLeft);
             }
             else {
-                // resolve code
+                await forgescript_1.Interpreter.run(ctx.clone({
+                    data: compiled
+                }));
                 await this.timeoutDelete(timeout.name);
             }
         }

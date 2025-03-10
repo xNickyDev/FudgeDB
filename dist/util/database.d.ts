@@ -40,6 +40,8 @@ export declare class DataBase extends DataBaseManager {
     static timeoutAdd(data: {
         name: string;
         time: number;
+        code: string;
+        ctx: string;
     }): Promise<Timeout | import("typeorm").UpdateResult>;
     static cdDelete(identifier: string): Promise<void>;
     static timeoutDelete(name: string): Promise<void>;
@@ -58,6 +60,8 @@ export declare class DataBase extends DataBaseManager {
         name: string;
         startedAt: number;
         time: number;
+        code: string;
+        ctx: string;
     } | {
         left: number;
     }>;

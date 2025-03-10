@@ -5,7 +5,7 @@ import { IDBEvents } from '../structures';
 import { TransformEvents } from '..';
 import 'reflect-metadata';
 import { DataBaseManager } from './databaseManager';
-import { CompiledFunction, Context, IExtendedCompiledFunction, IExtendedCompiledFunctionField, Interpreter } from '@tryforge/forgescript';
+import { Compiler, Context, Interpreter } from '@tryforge/forgescript';
 
 function isGuildData(data: RecordData): data is GuildData {
     return ['member', 'channel', 'role'].includes(data.type!);
@@ -119,11 +119,13 @@ export class DataBase extends DataBaseManager {
         else return await this.db.getRepository(this.entities.Cooldown).save(cd)
     }
 
-    public static async timeoutAdd(data: {name: string, time: number}){
+    public static async timeoutAdd(data: {name: string, time: number, code: string, ctx: string}){
         const to = new this.entities.Timeout()
         to.name = data.name
         to.startedAt = Date.now()
         to.time = data.time
+        to.code = data.code
+        to.ctx = data.ctx
 
         const oldTO = await this.db.getRepository(this.entities.Timeout).findOneBy({ name: to.name })
         if(oldTO && this.type == 'mongodb') return await this.db.getRepository(this.entities.Timeout).update(oldTO, to)
@@ -157,16 +159,22 @@ export class DataBase extends DataBaseManager {
     
         for (const timeout of timeouts) {
             const timeLeft = (await this.timeoutTimeLeft(timeout.name)).left
+            const compiled = Compiler.compile(timeout.code)
+            const ctx = JSON.parse(timeout.ctx) as Context
 
             if (timeLeft > 0) {
                 setTimeout(async () => {
                     if (await this.timeoutExists(timeout.name)) {
-                        // resolve code
+                        await Interpreter.run(ctx.clone({
+                            data: compiled
+                        }))
                         await this.timeoutDelete(timeout.name)
                     }
                 }, timeLeft)
             } else {
-                // resolve code
+                await Interpreter.run(ctx.clone({
+                    data: compiled
+                }))
                 await this.timeoutDelete(timeout.name)
             }
         }

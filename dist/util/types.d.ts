@@ -64,11 +64,15 @@ export declare class Timeout {
     name: string;
     startedAt: number;
     time: number;
+    code: string;
+    ctx: string;
 }
 export type TimeoutData = {
     name?: string;
     startedAt?: number;
     time?: number;
+    code?: string;
+    ctx?: string;
 };
 export declare class MongoRecord extends Record {
     mongoId?: string;
