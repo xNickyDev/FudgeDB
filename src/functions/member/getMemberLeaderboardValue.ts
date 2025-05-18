@@ -1,10 +1,5 @@
 import { ArgType, NativeFunction } from "@tryforge/forgescript"
-import { DataBase } from "../../util"
-
-export enum SortType {
-    asc,
-    desc,
-}
+import { DataBase, SortType } from "../../util"
 
 export default new NativeFunction({
     name: "$getMemberLeaderboardValue",
@@ -40,11 +35,11 @@ export default new NativeFunction({
             rest: false,
             type: ArgType.Guild,
             required: false,
-        }
+        },
     ],
     brackets: true,
     async execute(ctx, [name, sortType, member, guild]) {
-        const data = await DataBase.find({name, type: "member", guildId: guild?.id ?? ctx.guild!.id})
+        const data = await DataBase.find({ name, type: "member", guildId: guild?.id ?? ctx.guild!.id })
         const index = data.sort((x, y) => (sortType === SortType.desc ? Number(x.value) - Number(y.value) : Number(y.value) - Number(x.value))).findIndex((s) => s.id === (member ?? ctx.member?.id))
         return this.success(index + 1)
     },

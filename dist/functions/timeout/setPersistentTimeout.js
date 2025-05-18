@@ -43,7 +43,7 @@ exports.default = new forgescript_1.NativeFunction({
             name: nameV.value,
             time: time.value,
             code: code.value,
-            ctx: JSON.stringify(ctx)
+            ctx: JSON.stringify(ctx),
         });
         setTimeout(async () => {
             if (await util_1.DataBase.timeoutExists(nameV.value)) {

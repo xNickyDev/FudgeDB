@@ -34,7 +34,7 @@ export default new NativeFunction({
         const [, , code] = this.data.fields! as IExtendedCompiledFunctionField[]
         const nameV = await this["resolveUnhandledArg"](ctx, 0)
         if (!this["isValidReturnType"](nameV)) return nameV
-        
+
         const time = await this["resolveUnhandledArg"](ctx, 1)
         if (!this["isValidReturnType"](time)) return time
 
@@ -42,7 +42,7 @@ export default new NativeFunction({
             name: nameV.value as string,
             time: time.value as number,
             code: code.value,
-            ctx: JSON.stringify(ctx)
+            ctx: JSON.stringify(ctx),
         })
 
         setTimeout(async () => {

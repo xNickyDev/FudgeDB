@@ -24,14 +24,13 @@ export class ForgeDB extends ForgeExtension {
     init(client: ForgeClient): void {
         this.commands = new DBCommandManager(client)
 
-        EventManager.load('ForgeDBEvents', __dirname + '/events')
+        EventManager.load("ForgeDBEvents", __dirname + "/events")
         this.load(__dirname + "/functions")
-        
+
         new DataBase(this.emitter, this.options).init()
         client.db = DataBase
 
-        if (this.options?.events?.length)
-            client.events.load("ForgeDBEvents", this.options.events)
+        if (this.options?.events?.length) client.events.load("ForgeDBEvents", this.options.events)
     }
 
     public variables(rec: Record<PropertyKey, unknown>) {
@@ -54,4 +53,4 @@ export class ForgeDB extends ForgeExtension {
         return obj
     }
 }
-export { DataBaseManager } from './util'
+export { DataBaseManager } from "./util"

@@ -19,7 +19,7 @@ class ForgeDB extends forgescript_1.ForgeExtension {
     }
     init(client) {
         this.commands = new structures_1.DBCommandManager(client);
-        forgescript_1.EventManager.load('ForgeDBEvents', __dirname + '/events');
+        forgescript_1.EventManager.load("ForgeDBEvents", __dirname + "/events");
         this.load(__dirname + "/functions");
         new util_1.DataBase(this.emitter, this.options).init();
         client.db = util_1.DataBase;

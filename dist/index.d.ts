@@ -19,5 +19,5 @@ export declare class ForgeDB extends ForgeExtension {
     static variables(rec: Record<PropertyKey, unknown>): void;
     private static compileVariables;
 }
-export { DataBaseManager } from './util';
+export { DataBaseManager } from "./util";
 //# sourceMappingURL=index.d.ts.map
