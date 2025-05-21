@@ -5,12 +5,12 @@ import { ForgeDB } from "../.."
 export default new NativeFunction({
     name: "$getUserVar",
     version: "2.0.0",
-    description: "Retrieves the value of a specified variable for a user.",
+    description: "Retrieves the value of a specified variable for a user",
     output: ArgType.Unknown,
     unwrap: true,
     args: [
         {
-            name: "variable name",
+            name: "name",
             description: "The name of the variable.",
             rest: false,
             type: ArgType.String,

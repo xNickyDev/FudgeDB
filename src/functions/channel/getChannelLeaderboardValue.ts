@@ -6,6 +6,7 @@ export default new NativeFunction({
     name: "$getChannelLeaderboardValue",
     version: "2.0.0",
     description: "Fetches the position of a channel in the leaderboard of a variable",
+    aliases: ["$getChannelLeaderboardPosition"],
     output: ArgType.Number,
     unwrap: true,
     args: [

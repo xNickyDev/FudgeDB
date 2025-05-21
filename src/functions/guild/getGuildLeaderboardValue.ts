@@ -5,7 +5,7 @@ export default new NativeFunction({
     name: "$getGuildLeaderboardValue",
     version: "2.0.0",
     description: "Retrieves the position of a guild in the leaderboard of a variable",
-    aliases: ["$getServerLeaderboardValue"],
+    aliases: ["$getServerLeaderboardValue", "$getGuildLeaderboardPosition", "$getServerLeaderboardPosition"],
     output: ArgType.Number,
     unwrap: true,
     args: [

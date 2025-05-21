@@ -6,6 +6,7 @@ exports.default = new forgescript_1.NativeFunction({
     name: "$getChannelLeaderboardValue",
     version: "2.0.0",
     description: "Fetches the position of a channel in the leaderboard of a variable",
+    aliases: ["$getChannelLeaderboardPosition"],
     output: forgescript_1.ArgType.Number,
     unwrap: true,
     args: [
